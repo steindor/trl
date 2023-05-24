@@ -86,7 +86,7 @@ target_modules = None
 if "gpt-neox" in model_args.model_name_or_path:
     target_modules = ["query_key_value", "xxx"]  # workaround to use 8bit training on this model
 config = LoraConfig(
-    r=16, lora_alpha=32, target_modules=target_modules, lora_dropout=0.05, bias="none", task_type="CAUSAL_LM"
+    r=1, lora_alpha=16, target_modules=target_modules, lora_dropout=0.05, bias="none", task_type="CAUSAL_LM"
 )
 
 model = get_peft_model(model, config)
@@ -113,10 +113,10 @@ def group_texts(examples):
 
 
 # ### Training
-data = load_dataset("imdb")
-columns = data["train"].features
-data = data.map(lambda samples: tokenizer(samples["text"]), batched=True, remove_columns=columns)
-data = data.map(group_texts, batched=True)
+data = load_dataset("stoddur/referral_commands")
+#columns = data["train"].features
+#data = data.map(lambda samples: tokenizer(samples["text"]), batched=True, remove_columns=columns)
+#data = data.map(group_texts, batched=True)
 
 model.gradient_checkpointing_enable()
 trainer = transformers.Trainer(
@@ -129,7 +129,7 @@ model.config.use_cache = False  # silence the warnings. Please re-enable for inf
 trainer.train()
 
 # ## Share adapters on the 🤗 Hub
-model.push_to_hub(training_args.output_dir, use_auth_token=True)
+#model.push_to_hub(training_args.output_dir, use_auth_token=True)
 
 # Load adapters from the Hub and generate some output texts:
 
