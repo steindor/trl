@@ -147,7 +147,7 @@ tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 
 model.eval()
 
-batch = tokenizer("I really enjoyed the ", return_tensors="pt")
+batch = tokenizer("Sendu tilvísun í röntgenmynd af lungum fyrir Einar Gunnarsson, kt. 160984-2289", return_tensors="pt")
 
 with torch.cuda.amp.autocast():
     output_tokens = model.generate(**batch, max_new_tokens=50)
