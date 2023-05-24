@@ -133,16 +133,19 @@ trainer.train()
 
 # Load adapters from the Hub and generate some output texts:
 
-peft_model_id = training_args.output_dir
-config = PeftConfig.from_pretrained(peft_model_id)
-model = AutoModelForCausalLM.from_pretrained(
-    config.base_model_name_or_path, return_dict=True, load_in_8bit=True, device_map="auto"
-)
+#peft_model_id = training_args.output_dir
+#config = PeftConfig.from_pretrained(peft_model_id)
+#model = AutoModelForCausalLM.from_pretrained(
+#    config.base_model_name_or_path, return_dict=True, load_in_8bit=True, device_map="auto"
+#)
 tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 
 # Load the Lora model
-model = PeftModel.from_pretrained(model, peft_model_id)
+
+#model = PeftModel.from_pretrained(model, peft_model_id)
 # You can then directly use the trained model or the model that you have loaded from the 🤗 Hub for inference
+
+model.eval()
 
 batch = tokenizer("I really enjoyed the ", return_tensors="pt")
 
